@@ -27,12 +27,16 @@ public abstract class UIBase : MonoBehaviour
 
     public void Show()
     {
-        showAnimator.Play("Show");
+        if(showAnimator != null)
+            showAnimator.Play("Show");
+        OnUIShow();
     }
 
     public void Hide()
     {
-        showAnimator.Play("Hide");
+        if(showAnimator != null)
+            showAnimator.Play("Hide");
+        OnUIHide();
     }
     
     //Used from animation event

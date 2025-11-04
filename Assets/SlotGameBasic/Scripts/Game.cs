@@ -68,8 +68,11 @@ public class Game : MonoBehaviour
         
         yield return coroutineRunner.Execute(gameLoader.InitialLoad());
         
+        yield return null;
         uiAdmin.GrabUIBases();
+        
+        uiAdmin.Show<SlotMachinePopup>();
 
-        loadingCurtain.RefreshLoadingProgress(1.0f, ()=> loadingCurtain.Hide());
+        loadingCurtain.RefreshLoadingProgress(1.0f, () => loadingCurtain.Hide());
     }
 }
