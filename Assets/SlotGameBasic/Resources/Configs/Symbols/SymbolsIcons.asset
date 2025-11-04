@@ -12,3 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f749af778b42e58a5e276c44224567, type: 3}
   m_Name: SymbolsIcons
   m_EditorClassIdentifier: Assembly-CSharp::IconConfigAsset
+  targetFolder: Icons
+  icons:
+    _serializedList:
+    - Key: AXE
+      Value: {fileID: 21300000, guid: d75ab869bf735e843af0b6a866638915, type: 3}
+    - Key: BOOTS
+      Value: {fileID: 21300000, guid: 600db7d48756fd2448f1e1934d739833, type: 3}
+    - Key: GEM
+      Value: {fileID: 21300000, guid: e701654cd23936e47b576f7c3a1d0aad, type: 3}
+    - Key: HOOK
+      Value: {fileID: 21300000, guid: b1042157f0754ec41b2f9ef54cc1f63d, type: 3}
+    - Key: HUMAN
+      Value: {fileID: 21300000, guid: 9d4e74f26d47a804bb0effe8fbdb9022, type: 3}
+    - Key: SNOWMAN
+      Value: {fileID: 21300000, guid: ec6f054facfd10e48afee0946ab69e34, type: 3}
