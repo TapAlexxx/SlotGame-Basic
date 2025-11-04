@@ -712,9 +712,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1465668230}
+  - component: {fileID: 1465668231}
   - component: {fileID: 1465668233}
   - component: {fileID: 1465668232}
-  - component: {fileID: 1465668231}
+  - component: {fileID: 1465668234}
+  - component: {fileID: 1465668235}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -751,8 +753,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game
   <coroutineRunner>k__BackingField: {fileID: 1465668233}
   <uiAdmin>k__BackingField: {fileID: 1465668232}
+  <serverAdmin>k__BackingField: {fileID: 1465668235}
+  <configAdmin>k__BackingField: {fileID: 1465668234}
   loadingCurtain: {fileID: 734735470}
-  sceneLoadConfig: {fileID: 11400000, guid: 5d96c474ac2736a408f21db7f9002928, type: 2}
 --- !u!114 &1465668232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,6 +780,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf6c4ab028cf4424bc69fdf20b94965b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoroutineRunner
+--- !u!114 &1465668234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465668229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2762f6c0e2a94784b83a82d49d00b59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConfigAdmin
+  <sceneLoadConfig>k__BackingField: {fileID: 11400000, guid: 5d96c474ac2736a408f21db7f9002928, type: 2}
+  <symbolIcons>k__BackingField: {fileID: 11400000, guid: 5cb4baf0789789640a4b350a8d12995a, type: 2}
+--- !u!114 &1465668235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465668229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a59c298adf9481cafa21163aebf42cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ServerAdmin
 --- !u!1 &1475735995
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,11 +7,11 @@ using UnityEngine;
 public enum Symbol
 {
     NONE,
-    GEM,
     AXE,
-    HUMAN,
     BOOTS,
+    GEM,
     HOOK,
+    HUMAN,
     SNOWMAN,
 }
 
