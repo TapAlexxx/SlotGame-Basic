@@ -58,9 +58,7 @@ public class Game : MonoBehaviour
         gameLoader ??= new GameLoader();
         gameLoader.Init(this, sceneLoadConfig);
         
-        uiAdmin.Init();
-        
-        loadingCurtain.Init(this);
+        uiAdmin.Init(this);
     }
 
     private IEnumerator InitialLoad()

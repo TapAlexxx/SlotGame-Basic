@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,25 +7,25 @@ using UnityEngine.SceneManagement;
 public class UIAdmin : MonoBehaviour
 {
     private List<UIBase> uiBases;
+    private Game game;
 
-    public void Init()
+    public void Init(Game game)
     {
+        this.game = game;
     }
 
     public void GrabUIBases()
     {
         uiBases ??= new List<UIBase>();
         uiBases.Clear();
-
-        int count = SceneManager.sceneCount;
-        for (int i = 0; i < count; i++)
+        
+        var grabbedUIBases = GameObject.Find("HUD")?.GetComponentsInChildren<UIBase>(true);
+        if (grabbedUIBases == null) return;
+        
+        foreach (var uiBase in grabbedUIBases)
         {
-            Scene scene = SceneManager.GetSceneAt(i);
-            var roots = scene.GetRootGameObjects();
-            foreach (var r in roots)
-            {
-                uiBases.AddRange(r.GetComponentsInChildren<UIBase>(true));
-            }
+            uiBase.Init(game);
+            uiBases.Add(uiBase);
         }
     }
     

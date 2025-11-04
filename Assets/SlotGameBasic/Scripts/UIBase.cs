@@ -6,15 +6,21 @@ public abstract class UIBase : MonoBehaviour
     [SerializeField] protected Animator showAnimator;
     
     protected Game game;
+    private bool inited;
 
     public void Init(Game game)
     {
         this.game = game;
         OnInit();
+        
+        inited = true;
     }
 
     public void ShutDown()
     {
+        if(!inited)
+            return;
+        
         OnShutDown();
         game = null;
     }
