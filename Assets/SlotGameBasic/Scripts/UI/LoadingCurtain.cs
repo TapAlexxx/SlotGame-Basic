@@ -18,12 +18,12 @@ public sealed class LoadingCurtain : UIBase
 
     protected override void OnInit()
     {
-        game.gameLoader.onProgressChanged += RefreshLoadingProgress;
+        admin.game.gameLoader.onProgressChanged += RefreshLoadingProgress;
     }
 
     protected override void OnShutDown()
     {
-        game.gameLoader.onProgressChanged -= RefreshLoadingProgress;
+        admin.game.gameLoader.onProgressChanged -= RefreshLoadingProgress;
     }
 
     protected override void OnUIShow()

@@ -1,7 +1,6 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 [RequireComponent(typeof(CoroutineRunner), typeof(UIAdmin))]
@@ -9,17 +8,16 @@ public class Game : MonoBehaviour
 {
     [field:SerializeField] public CoroutineRunner coroutineRunner { get; private set; }
     [field:SerializeField] public UIAdmin uiAdmin { get; private set; }
+    [field:SerializeField] public ServerAdmin serverAdmin { get; private set; }
+    [field:SerializeField] public ConfigAdmin configAdmin { get; private set; }
     
     [Header("Loading")]
     [SerializeField] private LoadingCurtain loadingCurtain;
 
-    [Header("Configs")]
-    [SerializeField] private SceneLoadConfig sceneLoadConfig;
-
 
     public static Game instance { get; private set; }
     public GameLoader gameLoader {get; private set;}
-    public static FakeServer fakeServer { get; private set; }
+    public IServerAPI serverAPI { get; private set; }
 
     private void OnValidate()
     {
@@ -50,15 +48,17 @@ public class Game : MonoBehaviour
 
     private void Init()
     {
-        //Prewarm DoTween
         DOTween.Init();
         
-        fakeServer ??= new FakeServer();
+        //serverAPI ??= new ServerAPI();
+        serverAPI ??= new FakeServerAPI();
         
         gameLoader ??= new GameLoader();
-        gameLoader.Init(this, sceneLoadConfig);
+        gameLoader.Init(this);
         
         uiAdmin.Init(this);
+        serverAdmin.Init(this);
+        configAdmin.Init(this);
     }
 
     private IEnumerator InitialLoad()

@@ -1,18 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class UIAdmin : MonoBehaviour
+public class UIAdmin : BaseAdmin
 {
     private List<UIBase> uiBases;
-    private Game game;
-
-    public void Init(Game game)
-    {
-        this.game = game;
-    }
 
     public void GrabUIBases()
     {
@@ -24,7 +16,7 @@ public class UIAdmin : MonoBehaviour
         
         foreach (var uiBase in grabbedUIBases)
         {
-            uiBase.Init(game);
+            uiBase.Init(this);
             uiBases.Add(uiBase);
         }
     }
@@ -46,10 +38,5 @@ public class UIAdmin : MonoBehaviour
     {
         uiBase = uiBases.FirstOrDefault(x => x is T) as T;
         return uiBase != null;
-    }
-
-    public void OnGameLoaded()
-    {
-        throw new System.NotImplementedException();
     }
 }

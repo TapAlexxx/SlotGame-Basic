@@ -5,12 +5,13 @@ public abstract class UIBase : MonoBehaviour
 {
     [SerializeField] protected Animator showAnimator;
     
-    protected Game game;
     private bool inited;
+    
+    protected UIAdmin admin;
 
-    public void Init(Game game)
+    public void Init(UIAdmin uiAdmin)
     {
-        this.game = game;
+        admin = uiAdmin;
         OnInit();
         
         inited = true;
@@ -22,7 +23,6 @@ public abstract class UIBase : MonoBehaviour
             return;
         
         OnShutDown();
-        game = null;
     }
 
     public void Show()

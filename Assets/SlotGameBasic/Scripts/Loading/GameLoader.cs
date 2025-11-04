@@ -83,13 +83,11 @@ public class GameLoader
 
     private float currentLoadingProgress;
     private Game game;
-    private SceneLoadConfig sceneLoadConfig;
 
     public event Action<float> onProgressChanged;
 
-    public void Init(Game game, SceneLoadConfig sceneLoadConfig)
+    public void Init(Game game)
     {
-        this.sceneLoadConfig = sceneLoadConfig;
         this.game = game;
 
         sceneLoader = new ScenesLoader(this.game.coroutineRunner);
@@ -120,7 +118,7 @@ public class GameLoader
     {
         var executionSteps = new List<IEnumerator>();
         
-        executionSteps.Add(sceneLoader.Load(sceneLoadConfig.scenesToLoad));
+        executionSteps.Add(sceneLoader.Load(game.configAdmin.sceneLoadConfig.scenesToLoad));
 
         return executionSteps;
     }
