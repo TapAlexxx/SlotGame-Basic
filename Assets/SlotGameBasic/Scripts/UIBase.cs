@@ -1,8 +1,9 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public abstract class UIBase : MonoBehaviour
 {
-    [SerializeField] protected Animation showAnimator;
+    [SerializeField] protected Animator showAnimator;
     
     protected Game game;
 
@@ -26,6 +27,13 @@ public abstract class UIBase : MonoBehaviour
     public void Hide()
     {
         showAnimator.Play("Hide");
+    }
+    
+    //Used from animation event
+    [UsedImplicitly]
+    public void OnHideCompleteHandler()
+    {
+        gameObject.SetActive(false);
     }
     
     protected virtual void OnInit(){}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -32,15 +31,22 @@ public class ScenesLoader : BasicLoader<List<string>>
     public override IEnumerator Load(List<string> scenesToLoad)
     {
         SetState(LoaderState.RUNNING);
-        
+
+        this.scenesToLoad ??= new List<string>();
         this.scenesToLoad.AddRange(scenesToLoad);
 
         foreach (var sceneToLoad in scenesToLoad)
         {
             yield return coroutineRunner.Execute(LoadScene(sceneToLoad));
+            
+            if (state == LoaderState.FAIL)
+            {
+                Debug.LogError($"LoadSceneAsync returned null! Scene '{sceneToLoad}' not found!");
+                yield break;
+            }
         }
         
-        scenesToLoad.Clear();
+        this.scenesToLoad.Clear();
         
         SetState(LoaderState.SUCCESS);
     }
@@ -54,7 +60,6 @@ public class ScenesLoader : BasicLoader<List<string>>
             var operation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
             if (operation == null)
             {
-                Debug.LogError($"LoadSceneAsync returned null! Scene '{name}' not found!");
                 SetState(LoaderState.FAIL);
                 yield break;
             }
@@ -74,20 +79,20 @@ public class ScenesLoader : BasicLoader<List<string>>
 
 public class GameLoader
 {
-    private CoroutineRunner coroutineRunner;
     private ScenesLoader sceneLoader;
-    private SceneLoadConfig sceneLoadConfig;
 
     private float currentLoadingProgress;
-    
+    private Game game;
+    private SceneLoadConfig sceneLoadConfig;
+
     public event Action<float> onProgressChanged;
 
-    public void Init(CoroutineRunner coroutineRunner, SceneLoadConfig sceneLoadConfig)
+    public void Init(Game game, SceneLoadConfig sceneLoadConfig)
     {
         this.sceneLoadConfig = sceneLoadConfig;
-        this.coroutineRunner = coroutineRunner;
+        this.game = game;
 
-        sceneLoader = new ScenesLoader(this.coroutineRunner);
+        sceneLoader = new ScenesLoader(this.game.coroutineRunner);
 
         currentLoadingProgress = 0.0f;
     }
@@ -99,7 +104,7 @@ public class GameLoader
         int executedParts = 0;
         foreach (var executionStep in executionSteps)
         {
-            yield return coroutineRunner.Execute(executionStep);
+            yield return game.coroutineRunner.Execute(executionStep);
             executedParts++;
             RefreshLoadingProgress(executedParts, executionSteps.Count);
         }

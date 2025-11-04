@@ -1,63 +1,16 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class UIAdmin : MonoBehaviour
-{
-    private Game game;
-    private List<UIBase> uiBases;
-
-    public void Init(Game game)
-    {
-        this.game = game;
-    }
-
-    public IEnumerator GrabUIBases()
-    {
-        yield return null;
-        uiBases = new List<UIBase>();
-
-        int count = SceneManager.sceneCount;
-        for (int i = 0; i < count; i++)
-        {
-            Scene scene = SceneManager.GetSceneAt(i);
-            var roots = scene.GetRootGameObjects();
-            foreach (var r in roots)
-            {
-                uiBases.AddRange(r.GetComponentsInChildren<UIBase>(true));
-            }
-        }
-    }
-    
-    public void Show<T>() where T : UIBase
-    {
-        if (GetUIBase<T>(out var ui))
-        {
-            ui.gameObject.SetActive(true);
-            ui.Show();
-        }
-        if (!ui)
-        {
-            Debug.LogWarning($"Missing ui '{typeof(T)}'!");
-        }
-    }
-
-    private bool GetUIBase<T>(out T uiBase) where T : UIBase
-    {
-        uiBase = uiBases.FirstOrDefault(x => x is T) as T;
-        return uiBase != null;
-    }
-}
-
-[RequireComponent(typeof(CoroutineRunner))]
+[RequireComponent(typeof(CoroutineRunner), typeof(UIAdmin))]
 public class Game : MonoBehaviour
 {
-    [SerializeField] private CoroutineRunner coroutineRunner;
+    [field:SerializeField] public CoroutineRunner coroutineRunner { get; private set; }
+    [field:SerializeField] public UIAdmin uiAdmin { get; private set; }
+    
+    [Header("Loading")]
     [SerializeField] private LoadingCurtain loadingCurtain;
 
     [Header("Configs")]
@@ -70,7 +23,8 @@ public class Game : MonoBehaviour
 
     private void OnValidate()
     {
-        gameLoader ??= GetComponent<GameLoader>();
+        coroutineRunner ??= GetComponent<CoroutineRunner>();
+        uiAdmin ??= GetComponent<UIAdmin>();
     }
 
     private void Awake()
@@ -91,12 +45,7 @@ public class Game : MonoBehaviour
     private void BootstrapGame()
     {
         Init();
-        LoadInitial();
-    }
-
-    private void LoadInitial()
-    {
-        
+        StartCoroutine(InitialLoad());
     }
 
     private void Init()
@@ -104,8 +53,25 @@ public class Game : MonoBehaviour
         //Prewarm DoTween
         DOTween.Init();
         
-        fakeServer = new FakeServer();
+        fakeServer ??= new FakeServer();
         
-        gameLoader.Init(coroutineRunner, sceneLoadConfig);
+        gameLoader ??= new GameLoader();
+        gameLoader.Init(this, sceneLoadConfig);
+        
+        uiAdmin.Init();
+        
+        loadingCurtain.Init(this);
+    }
+
+    private IEnumerator InitialLoad()
+    {
+        loadingCurtain.gameObject.SetActive(true);
+        loadingCurtain.Show();
+        
+        yield return coroutineRunner.Execute(gameLoader.InitialLoad());
+        
+        uiAdmin.GrabUIBases();
+
+        loadingCurtain.RefreshLoadingProgress(1.0f, ()=> loadingCurtain.Hide());
     }
 }
